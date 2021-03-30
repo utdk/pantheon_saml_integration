@@ -148,7 +148,7 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
         if (file_exists($settings_file)) {
             $this->filesystem->remove($web_root . '/sites/default/settings.pantheon.saml.php');
         }
-        $this->filesystem->copy('./vendor/utexas/utexas_pantheon_saml_auth/assets/drupal-settings/settings.pantheon.saml.php', $web_root . '/sites/default/settings.pantheon.saml.php');
+        $this->filesystem->copy('./vendor/utexas/pantheon_saml_integration/assets/drupal-settings/settings.pantheon.saml.php', $web_root . '/sites/default/settings.pantheon.saml.php');
     }
 
     /**
