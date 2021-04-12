@@ -8,6 +8,7 @@ labels: 'release'
 ## Pre-release checks
 
 - [ ] Review the [documentation issues](https://github.austin.utexas.edu/eis1-wcs/utdk_docs/issues) for any pending tasks that relate to the issues resolved; if any have not been completed, put this issue on hold & resolve those documentation tasks
+- [ ] If changes have been staged for `utexas/utexas_saml_auth_helper` during the last release cycle, a new release has been tagged. Then bump the version number requirement in this plugin's `composer.json`.
 - [ ] Contributed module dependencies have been updated, if updates are available
     - (script available at [utdk3_release_packaging](https://github.austin.utexas.edu/eis1-wcs/utdk3_release_packaging/blob/main/releases/utdk_contrib_updater.sh))
 
@@ -22,7 +23,7 @@ composer outdated --direct
 ## Release pull request tasks
 
 - [ ] Create release branch from develop, e.g. `release/3.0.0`
-- [ ] Open PR for release branch
+- [ ] Since this plugin does not have an `info.yml` file, there may be no code changes for the actual release. Request a review of the issue by a team member before completing the release, below.
 
 ## Release completion tasks
 
