@@ -1,5 +1,5 @@
 ## Purpose
-Fixes #
+Resolves #
 
 ## Vouches
 - [ ] I checked the changed files for syntax compliance & [naming conventions](https://github.austin.utexas.edu/eis1-wcs/d8-standards/blob/master/Naming_Conventions.md) adherence
