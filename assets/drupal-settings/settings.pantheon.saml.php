@@ -6,6 +6,17 @@
  * utexas_pantheon_saml_auth.
  */
 
+// Ensure correct SSL port. See
+// https://pantheon.io/docs/server_name-and-server_port#set-server_port-correctly
+if (isset($_ENV['PANTHEON_ENVIRONMENT'])) {
+  if (isset($_SERVER['HTTP_USER_AGENT_HTTPS']) && $_SERVER['HTTP_USER_AGENT_HTTPS'] === 'ON') {
+    $_SERVER['SERVER_PORT'] = 443;
+  }
+  else {
+    $_SERVER['SERVER_PORT'] = 80;
+  }
+}
+
 // Provide universal absolute path to the installation.
 $settings['simplesamlphp_dir'] = $_ENV['HOME'] . '/code/vendor/simplesamlphp/simplesamlphp';
 
