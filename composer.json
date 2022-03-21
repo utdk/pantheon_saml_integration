@@ -2,8 +2,12 @@
   "name": "utexas/pantheon_saml_integration",
   "type": "composer-plugin",
   "description": "Composer plugin that integrates the University of Texas Enterprise Authentication on Pantheon for the UT Drupal Kit",
-  "keywords": ["Drupal"],
-  "license": ["GPL-2.0-or-later"],
+  "keywords": [
+    "Drupal"
+  ],
+  "license": [
+    "GPL-2.0-or-later"
+  ],
   "homepage": "https://drupalkit.its.utexas.edu",
   "minimum-stability": "dev",
   "authors": [
@@ -19,9 +23,9 @@
     "source": "https://github.austin.utexas.edu/eis1-wcs/pantheon_saml_integration"
   },
   "require": {
-      "composer-plugin-api": "^1.0 || ^2.0",
-      "drupal/simplesamlphp_auth": "3.2",
-      "utexas/utexas_saml_auth_helper": "3.0.0"
+    "composer-plugin-api": "^1.0 || ^2.0",
+    "drupal/simplesamlphp_auth": "3.2",
+    "utexas/utexas_saml_auth_helper": "3.1.0"
   },
   "require-dev": {
     "composer/composer": "^1.0 || ^2.0"
@@ -36,5 +40,6 @@
   },
   "extra": {
     "class": "Utexas\\Composer\\SamlAuthenticationSetupPlugin"
-  }
+  },
+  "prefer-stable": true
 }
