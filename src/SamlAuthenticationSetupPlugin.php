@@ -161,6 +161,8 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
         $drupalCorePackage = $this->composer->getRepositoryManager()->getLocalRepository()->findPackage('drupal/core', '*');
         $installationManager = $this->composer->getInstallationManager();
         $corePath = $installationManager->getInstallPath($drupalCorePackage);
+        // Ensure we use a relative path for generating the symlinks.
+        $corePath = str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $corePath);
         // Webroot is the parent path of the drupal core installation path.
         $webroot = dirname($corePath);
 
