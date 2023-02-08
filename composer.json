@@ -24,9 +24,10 @@
   },
   "require": {
     "composer-plugin-api": "^1.0 || ^2.0",
-    "composer/installers": "^1.9",
-    "drupal/simplesamlphp_auth": "3.3",
-    "utexas/utexas_saml_auth_helper": "3.1.0"
+    "composer/installers": "^1.9 || ^2.0",
+    "drupal/core": "^10",
+    "drupal/simplesamlphp_auth": "dev-4.x#666615bd55fd20b1a744ca376765d257093d5538",
+    "utexas/utexas_saml_auth_helper": "3.2.0"
   },
   "require-dev": {
     "composer/composer": "^1.0 || ^2.0"
