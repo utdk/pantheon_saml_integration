@@ -128,7 +128,7 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
         // 2. Generate symlinks required by Pantheon.
         $this->io->write('[UTexas Pantheon SAML]: Generating symlinks');
         $links = [
-          [$web_root_depth . 'vendor/simplesamlphp/simplesamlphp/www', $web_root . '/simplesaml'],
+          [$web_root_depth . 'vendor/simplesamlphp/simplesamlphp/public', $web_root . '/simplesaml'],
           ['../../../' . $web_root . '/sites/default/files/private/saml/assets/config', './vendor/simplesamlphp/simplesamlphp/config'],
           ['../../../' . $web_root . '/sites/default/files/private/saml/assets/metadata', './vendor/simplesamlphp/simplesamlphp/metadata'],
         ];
