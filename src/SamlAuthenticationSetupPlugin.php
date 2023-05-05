@@ -92,7 +92,6 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
      */
     public function initializeFiles(Event $event)
     {
-        // @TODO: Evaluate if this can be removed in favor of $_ENV['DOCROOT'].
         // Get webroot.
         $web_root = $this->getWebRoot();
         $web_root_depth = '';
@@ -109,15 +108,18 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
             $web_root_depth = explode('/', $web_root);
             $web_root_depth = (str_repeat("../", count($web_root_depth)));
         }
-        $this->io->write('Webroot located at: ' . $web_root);
+        // $this->io->write('Webroot located at: ' . $web_root);
 
-        // 1. Remove empty config and metadata directories
-        // provided by simplesamlphp, and pantheon symlink.
+        // 1. Copy fork in vendor/utexas/simplesamlphp to expected location.
+        if (is_dir('./vendor/utexas/simplesamlphp')) {
+            $this->filesystem->copy('./vendor/utexas/simplesamlphp', './vendor/simplesamlphp/simplesamlphp');
+        }
+
+        // 2. Remove default config and metadata directories from simplesamlphp.
         $this->io->write('[UTexas Pantheon SAML]: Directory cleanup');
         $directories = [
           './vendor/simplesamlphp/simplesamlphp/config',
           './vendor/simplesamlphp/simplesamlphp/metadata',
-          $web_root . '/simplesaml',
         ];
         foreach ($directories as $dir) {
             if (is_dir($dir)) {
@@ -125,24 +127,32 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
             }
         }
 
-        // 2. Generate symlinks required by Pantheon.
+        // 3. Generate symlinks required by Pantheon.
         $this->io->write('[UTexas Pantheon SAML]: Generating symlinks');
-        $links = [
-          [$web_root_depth . 'vendor/simplesamlphp/simplesamlphp/public', $web_root . '/simplesaml'],
-          ['../../../' . $web_root . '/sites/default/files/private/saml/assets/config', './vendor/simplesamlphp/simplesamlphp/config'],
-          ['../../../' . $web_root . '/sites/default/files/private/saml/assets/metadata', './vendor/simplesamlphp/simplesamlphp/metadata'],
+        $links = [];
+        $links[] = [
+            'content' => $web_root_depth . 'vendor/simplesamlphp/simplesamlphp/public',
+            'symlink' => $web_root . '/simplesaml',
+        ];
+        $links[] = [
+            'content' => '../../../' . $web_root . '/sites/default/files/private/saml/assets/config',
+            'symlink' => './vendor/simplesamlphp/simplesamlphp/config',
+        ];
+        $links[] = [
+            'content' => '../../../' . $web_root . '/sites/default/files/private/saml/assets/metadata',
+            'symlink' => './vendor/simplesamlphp/simplesamlphp/metadata'
         ];
         foreach ($links as $link) {
             // Delete symlink before creating new one.
-            if (is_link($link[1])) {
-                $this->io->write('Recreating symlink: ' . $link[1]);
-                unlink($link[1]);
+            if (is_link($link['symlink'])) {
+                $this->io->write('[UTexas Pantheon SAML]: Deleting symlink: ' . $link['symlink']);
+                unlink($link['symlink']);
             }
-            $this->io->write('Making directory: ' . $link[1] . ' a symlink pointing to: ' . $link[0]);
-            symlink($link[0], $link[1]);
+            $this->io->write('[UTexas Pantheon SAML]: Making directory: ' . $link['symlink'] . ' a symlink pointing to: ' . $link['content']);
+            symlink($link['content'], $link['symlink']);
         }
 
-        // 3. Copy the saml specific settings file within sites/default.
+        // 4. Copy SAML-specific settings file within /sites/default.
         $this->io->write('[UTexas Pantheon SAML]: Copying Drupal settings file');
         $settings_file = $web_root . '/sites/default/settings.pantheon.saml.php';
         if (file_exists($settings_file)) {
