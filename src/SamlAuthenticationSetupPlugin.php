@@ -110,12 +110,7 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
         }
         // $this->io->write('Webroot located at: ' . $web_root);
 
-        // 1. Copy fork in vendor/utexas/simplesamlphp to expected location.
-        if (is_dir('./vendor/utexas/simplesamlphp')) {
-            $this->filesystem->copy('./vendor/utexas/simplesamlphp', './vendor/simplesamlphp/simplesamlphp');
-        }
-
-        // 2. Remove default config and metadata directories from simplesamlphp.
+        // 1. Remove default config and metadata directories from simplesamlphp.
         $this->io->write('[UTexas Pantheon SAML]: Directory cleanup');
         $directories = [
           './vendor/simplesamlphp/simplesamlphp/config',
@@ -127,7 +122,7 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
             }
         }
 
-        // 3. Generate symlinks required by Pantheon.
+        // 2. Generate symlinks required by Pantheon.
         $this->io->write('[UTexas Pantheon SAML]: Generating symlinks');
         $links = [];
         $links[] = [
@@ -152,7 +147,7 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
             symlink($link['content'], $link['symlink']);
         }
 
-        // 4. Copy SAML-specific settings file within /sites/default.
+        // 3. Copy SAML-specific settings file within /sites/default.
         $this->io->write('[UTexas Pantheon SAML]: Copying Drupal settings file');
         $settings_file = $web_root . '/sites/default/settings.pantheon.saml.php';
         if (file_exists($settings_file)) {
