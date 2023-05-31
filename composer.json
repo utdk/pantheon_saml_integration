@@ -2,6 +2,7 @@
   "name": "utexas/pantheon_saml_integration",
   "type": "composer-plugin",
   "description": "Composer plugin that integrates the University of Texas Enterprise Authentication on Pantheon for the UT Drupal Kit",
+  "version": "3.8.0",
   "keywords": [
     "Drupal"
   ],
