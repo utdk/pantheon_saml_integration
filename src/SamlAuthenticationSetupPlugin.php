@@ -92,29 +92,12 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
      */
     public function initializeFiles(Event $event)
     {
-        // Get webroot.
-        $web_root = $this->getWebRoot();
-        $web_root_depth = '';
-        // Get relative paths.
-        if ($web_root === '.') {
-            // If webroot is docroot, no depth.
-            $web_root_depth = './';
-        } elseif (strpos($web_root, '/') === false) {
-            // There is one level of depth. Such as /web.
-            $web_root_depth = '../';
-        } elseif (strpos($web_root, '/') !== false) {
-            // If slash present, there are a least 2 levels.
-            // of depth.
-            $web_root_depth = explode('/', $web_root);
-            $web_root_depth = (str_repeat("../", count($web_root_depth)));
-        }
-        // $this->io->write('Webroot located at: ' . $web_root);
 
         // 1. Remove default config and metadata directories from simplesamlphp.
         $this->io->write('[UTexas Pantheon SAML]: Directory cleanup');
         $directories = [
-          './vendor/simplesamlphp/simplesamlphp/config',
-          './vendor/simplesamlphp/simplesamlphp/metadata',
+          'vendor/simplesamlphp/simplesamlphp/config',
+          'vendor/simplesamlphp/simplesamlphp/metadata',
         ];
         foreach ($directories as $dir) {
             if (is_dir($dir)) {
@@ -126,16 +109,16 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
         $this->io->write('[UTexas Pantheon SAML]: Generating symlinks');
         $links = [];
         $links[] = [
-            'content' => $web_root_depth . 'vendor/simplesamlphp/simplesamlphp/www',
-            'symlink' => $web_root . '/simplesaml',
+            'content' => 'vendor/simplesamlphp/simplesamlphp/www',
+            'symlink' => 'simplesaml',
         ];
         $links[] = [
-            'content' => '../../../' . $web_root . 'wp-content/uploads/private/saml/assets/config',
-            'symlink' => './vendor/simplesamlphp/simplesamlphp/config',
+            'content' => '../../../wp-content/uploads/private/saml/assets/config',
+            'symlink' => 'vendor/simplesamlphp/simplesamlphp/config',
         ];
         $links[] = [
-            'content' => '../../../' . $web_root . '/wp-content/uploads/private/saml/assets/metadata ',
-            'symlink' => './vendor/simplesamlphp/simplesamlphp/metadata'
+            'content' => '../../../wp-content/uploads/private/saml/assets/metadata',
+            'symlink' => 'vendor/simplesamlphp/simplesamlphp/metadata'
         ];
         foreach ($links as $link) {
             // Delete symlink before creating new one.
@@ -147,23 +130,4 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
             symlink($link['content'], $link['symlink']);
         }
     }
-
-    /**
-     * Retrieve the path to the web root.
-     *
-     * @return string
-     */
-    public function getWebRoot()
-    {
-        $drupalCorePackage = $this->composer->getRepositoryManager()->getLocalRepository()->findPackage('drupal/core', '*');
-        $installationManager = $this->composer->getInstallationManager();
-        $corePath = $installationManager->getInstallPath($drupalCorePackage);
-        // Ensure we use a relative path for generating the symlinks.
-        $corePath = str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $corePath);
-        // Webroot is the parent path of the drupal core installation path.
-        $webroot = dirname($corePath);
-
-        return $webroot;
-    }
-
 }
