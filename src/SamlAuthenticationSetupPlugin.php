@@ -3,7 +3,7 @@
 /**
  * This file is part of the Pantheon SAML Integration plugin.
  *
- * Copyright (C) 2019-2021 by The University of Texas at Austin.
+ * Copyright (C) 2019-2023 by The University of Texas at Austin.
  */
 
 namespace Utexas\Composer;
@@ -93,6 +93,33 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
     public function initializeFiles(Event $event)
     {
 
+        $extra = $this->composer->getPackage()->getExtra();
+        $wp_location = '';
+        $webroot = './';
+        if (isset($extra['wordpress-install-dir'])) {
+            $wp_location = $extra['wordpress-install-dir'];
+        }
+        if (isset($extra['web-root'])) {
+            $webroot = $extra['web-root'];
+            $webroot = trim($webroot, './');
+        }
+        if (in_array($webroot, ['.', '', './'])) {
+            // If webroot is docroot, no depth.
+            $webroot_depth = './';
+        }
+        elseif (strpos($webroot, '/') === false) {
+            $this->io->write('one level');
+            // There is one level of depth. Such as web.
+            $webroot_depth = '../';
+        }
+        elseif (strpos($webroot, '/') !== false) {
+            // If slash present, there are a least 2 levels.
+            // of depth.
+            $this->io->write('two level');
+            $webroot_depth = explode('/', $webroot);
+            $webroot_depth = (str_repeat("../", count($web_root_depth)));
+        }
+
         // 1. Remove default config and metadata directories from simplesamlphp.
         $this->io->write('[UTexas Pantheon SAML]: Directory cleanup');
         $directories = [
@@ -108,16 +135,17 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
         // 2. Generate symlinks required by Pantheon.
         $this->io->write('[UTexas Pantheon SAML]: Generating symlinks');
         $links = [];
+
         $links[] = [
-            'content' => 'vendor/simplesamlphp/simplesamlphp/www',
-            'symlink' => 'simplesaml',
+            'content' => $webroot_depth . '/vendor/simplesamlphp/simplesamlphp/www',
+            'symlink' => $webroot . 'simplesaml',
         ];
         $links[] = [
-            'content' => '../../../wp-content/uploads/private/saml/assets/config',
+            'content' => '../../../' . $wp_location . '/wp-content/uploads/private/saml/assets/config',
             'symlink' => 'vendor/simplesamlphp/simplesamlphp/config',
         ];
         $links[] = [
-            'content' => '../../../wp-content/uploads/private/saml/assets/metadata',
+            'content' => '../../../' . $wp_location . '/wp-content/uploads/private/saml/assets/metadata',
             'symlink' => 'vendor/simplesamlphp/simplesamlphp/metadata'
         ];
         foreach ($links as $link) {
