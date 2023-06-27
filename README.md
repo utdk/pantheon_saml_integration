@@ -1,7 +1,31 @@
 # Pantheon SAML Integration
-This is a Composer plugin that integrates the University of Texas Enterprise Authentication on Pantheon for the UT Drupal Kit.
+This is a Composer plugin that integrates the University of Texas Enterprise Authentication on Pantheon.
 
 Full user documentation can be found at https://drupalkit.its.utexas.edu/docs/getting_started/pantheon_setup.html#integrating-enterprise-authentication
+
+## Usage with WordPress
+At a minimum, a WordPress site's `composer.json` file needs to include the following directives:
+
+```json
+    "extra": {
+        "installer-paths": {
+            "wp-content/plugins/{$name}/": ["type:wordpress-plugin"],
+            "wp-content/themes/{$name}/": ["type:wordpress-theme"]
+        },
+        "enable-patching": true,
+        "composer-exit-on-patch-failure": true
+    },
+```
+
+If the site's webroot is not the project root (e.g., `web` and/or the WordPress installation directory is different, they must be specified as shown below):
+
+```json
+    "extra": {
+        ...
+        "web-root": "ENTER-LOCATION",
+        "wordpress-install-dir": "ENTER-LOCATION",
+    },
+```
 
 
 ## Architectural overview

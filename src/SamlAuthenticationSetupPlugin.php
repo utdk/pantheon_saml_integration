@@ -108,14 +108,13 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
             $webroot_depth = './';
         }
         elseif (strpos($webroot, '/') === false) {
-            $this->io->write('one level');
+            $webroot = $webroot . '/';
             // There is one level of depth. Such as web.
             $webroot_depth = '../';
         }
         elseif (strpos($webroot, '/') !== false) {
             // If slash present, there are a least 2 levels.
             // of depth.
-            $this->io->write('two level');
             $webroot_depth = explode('/', $webroot);
             $webroot_depth = (str_repeat("../", count($web_root_depth)));
         }
