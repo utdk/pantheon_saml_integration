@@ -28,6 +28,7 @@
     "composer/installers": "^1.9 || ^2.0",
     "cweagans/composer-patches": "^1.7",
     "pantheon-systems/wp-saml-auth": "2.1.1",
+    "simplesamlphp/saml2": "4.6.8",
     "simplesamlphp/simplesamlphp": "1.19.8"
   },
   "require-dev": {
