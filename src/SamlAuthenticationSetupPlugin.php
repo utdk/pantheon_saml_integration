@@ -136,7 +136,7 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
         $links = [];
 
         $links[] = [
-            'content' => $webroot_depth . '/vendor/simplesamlphp/simplesamlphp/www',
+            'content' => $webroot_depth . '/vendor/simplesamlphp/simplesamlphp/public',
             'symlink' => $webroot . 'simplesaml',
         ];
         $links[] = [
