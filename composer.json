@@ -1,10 +1,10 @@
 {
   "name": "utexas/pantheon_saml_integration",
   "type": "composer-plugin",
-  "description": "Composer plugin that integrates the University of Texas Enterprise Authentication on Pantheon for the UT Drupal Kit",
-  "version": "4.0.0-alpha4",
+  "description": "Composer plugin that integrates the University of Texas Enterprise Authentication on Pantheon for Wordpress",
+  "version": "wp",
   "keywords": [
-    "Drupal"
+    "Wordpress"
   ],
   "license": [
     "GPL-2.0-or-later"
@@ -26,9 +26,9 @@
   "require": {
     "composer-plugin-api": "^1.0 || ^2.0",
     "composer/installers": "^1.9 || ^2.0",
-    "drupal/core": "^10",
-    "utexas/simplesamlphp_auth": "4.0.2",
-    "utexas/utexas_saml_auth_helper": "3.3.0"
+    "cweagans/composer-patches": "^1.7",
+    "pantheon-systems/wp-saml-auth": "2.1.1",
+    "simplesamlphp/simplesamlphp": "1.19.8"
   },
   "require-dev": {
     "composer/composer": "^1.0 || ^2.0"
@@ -44,9 +44,8 @@
   "extra": {
     "class": "Utexas\\Composer\\SamlAuthenticationSetupPlugin",
     "patches": {
-      "utexas/simplesamlphp_auth": {
-          "Role sync breaks manual role assignment": "https://drupalkit.its.utexas.edu/patches/3116539-simplesamlphp_auth-manual-role-assignment.patch",
-          "Redirect to original destination after logging in": "https://drupalkit.its.utexas.edu/patches/2983154-simplesamlphp_auth-redirect-after-login.patch"
+      "pantheon-systems/wp-saml-auth": {
+          "Allow for IdP logout": "https://drupalkit.its.utexas.edu/patches/wp-saml-auth_logout.patch"
       }
     }
   },

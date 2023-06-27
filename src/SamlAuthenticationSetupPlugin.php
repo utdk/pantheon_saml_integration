@@ -126,15 +126,15 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
         $this->io->write('[UTexas Pantheon SAML]: Generating symlinks');
         $links = [];
         $links[] = [
-            'content' => $web_root_depth . 'vendor/simplesamlphp/simplesamlphp/public',
+            'content' => $web_root_depth . 'vendor/simplesamlphp/simplesamlphp/www',
             'symlink' => $web_root . '/simplesaml',
         ];
         $links[] = [
-            'content' => '../../../' . $web_root . '/sites/default/files/private/saml/assets/config',
+            'content' => '../../../' . $web_root . 'wp-content/uploads/private/saml/assets/config',
             'symlink' => './vendor/simplesamlphp/simplesamlphp/config',
         ];
         $links[] = [
-            'content' => '../../../' . $web_root . '/sites/default/files/private/saml/assets/metadata',
+            'content' => '../../../' . $web_root . '/wp-content/uploads/private/saml/assets/metadata ',
             'symlink' => './vendor/simplesamlphp/simplesamlphp/metadata'
         ];
         foreach ($links as $link) {
@@ -146,14 +146,6 @@ class SamlAuthenticationSetupPlugin implements PluginInterface, EventSubscriberI
             $this->io->write('[UTexas Pantheon SAML]: Making directory: ' . $link['symlink'] . ' a symlink pointing to: ' . $link['content']);
             symlink($link['content'], $link['symlink']);
         }
-
-        // 3. Copy SAML-specific settings file within /sites/default.
-        $this->io->write('[UTexas Pantheon SAML]: Copying Drupal settings file');
-        $settings_file = $web_root . '/sites/default/settings.pantheon.saml.php';
-        if (file_exists($settings_file)) {
-            $this->filesystem->remove($web_root . '/sites/default/settings.pantheon.saml.php');
-        }
-        $this->filesystem->copy('./vendor/utexas/pantheon_saml_integration/assets/drupal-settings/settings.pantheon.saml.php', $web_root . '/sites/default/settings.pantheon.saml.php');
     }
 
     /**
