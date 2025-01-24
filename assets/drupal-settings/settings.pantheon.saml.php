@@ -2,47 +2,72 @@
 
 /**
  * @file
- * Drupal settings.pantheon.saml.php file provided by
- * utexas_pantheon_saml_auth.
+ * Configuration for `samlauth` integration with Enterprise Authentication.
  */
 
-// Ensure correct SSL port. See
-// https://pantheon.io/docs/server_name-and-server_port#set-server_port-correctly
-if (isset($_ENV['PANTHEON_ENVIRONMENT'])) {
-  if (isset($_SERVER['HTTP_USER_AGENT_HTTPS']) && $_SERVER['HTTP_USER_AGENT_HTTPS'] === 'ON') {
-    $_SERVER['SERVER_PORT'] = 443;
-  }
-  else {
-    $_SERVER['SERVER_PORT'] = 80;
-  }
+$saml_auth_config = [
+  "login_menu_item_title" => "Sign in with UT EID",
+  "logout_menu_item_title" => "Sign out",
+  "login_link_title" => "Sign in with UT EID",
+  "login_auto_redirect" => FALSE,
+  "login_redirect_url" => "",
+  "logout_redirect_url" => "",
+  "error_redirect_url" => "",
+  "error_throw" => FALSE,
+  "login_error_keep_session" => FALSE,
+  "local_login_saml_error" => FALSE,
+  "logout_different_user" => FALSE,
+  "drupal_login_roles" => [],
+  "sp_entity_id" => 'https://' . $_SERVER['HTTP_HOST'] . '/onelogin',
+  "sp_name_id_format" => "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+  "sp_x509_certificate" => "file:sites/default/files/private/saml/assets/cert/sp-cert.crt",
+  "sp_new_certificate" => "",
+  "sp_private_key" => "file:sites/default/files/private/saml/assets/cert/sp-key.pem",
+  "metadata_valid_secs" => "1",
+  "metadata_cache_http" => FALSE,
+  "idp_entity_id" => "https://enterprise.login.utexas.edu/idp/shibboleth",
+  "idp_single_sign_on_service" => "https://enterprise.login.utexas.edu/idp/profile/SAML2/Redirect/SSO",
+  "idp_single_log_out_service" => 'https://' . $_SERVER['HTTP_HOST'] . '/saml/sls',
+  "idp_change_password_service" => "",
+  "idp_certs" => "{  }",
+  "idp_cert_encryption" => "",
+  "unique_id_attribute" => "uid",
+  "map_users" => FALSE,
+  "map_users_name" => TRUE,
+  "map_users_mail" => FALSE,
+  "create_users" => FALSE,
+  "sync_name" => FALSE,
+  "sync_mail" => TRUE,
+  "user_name_attribute" => "uid",
+  "user_mail_attribute" => "mail",
+  "request_set_name_id_policy" => FALSE,
+  "strict" => FALSE,
+  "security_metadata_sign" => FALSE,
+  "security_authn_requests_sign" => FALSE,
+  "security_logout_requests_sign" => FALSE,
+  "security_logout_responses_sign" => FALSE,
+  "security_nameid_encrypt" => FALSE,
+  "security_signature_algorithm" => "",
+  "security_encryption_algorithm" => "",
+  "security_messages_sign" => FALSE,
+  "security_assertions_signed" => TRUE,
+  "security_assertions_encrypt" => TRUE,
+  "security_nameid_encrypted" => FALSE,
+  "security_want_name_id" => FALSE,
+  "security_request_authn_context" => FALSE,
+  "security_lowercase_url_encoding" => FALSE,
+  "security_logout_reuse_sigs" => FALSE,
+  "security_allow_repeat_attribute_name" => FALSE,
+  "debug_display_error_details" => FALSE,
+  "debug_log_in" => FALSE,
+  "debug_log_saml_in" => FALSE,
+  "debug_log_saml_out" => FALSE,
+  "debug_phpsaml" => FALSE,
+  "use_proxy_headers" => FALSE,
+  "use_base_url" => TRUE,
+  "bypass_relay_state_check" => FALSE,
+];
+
+foreach ($saml_auth_config as $key => $value) {
+  $config['samlauth.authentication'][$key] = $value;
 }
-
-// Provide universal absolute path to the installation.
-$settings['simplesamlphp_dir'] = $_ENV['HOME'] . '/code/vendor/simplesamlphp/simplesamlphp';
-
-// Which attributes from Enterprise Authentication should we use for various user fields.
-$config['simplesamlphp_auth.settings']['unique_id'] = "uid";
-$config['simplesamlphp_auth.settings']['user_name'] = "uid";
-$config['simplesamlphp_auth.settings']['mail_attr'] = "mail";
-
-// We want to make sure User 1 can always log in using local authentication
-// (even if SAML auth is enabled).  There are two settings required for this:
-// * simplesamlphp_auth.settings -> allow.default_login
-// * simplesamlphp_auth.settings -> allow_default_login_users
-//
-// Allow authentication with local Drupal accounts.
-$config['simplesamlphp_auth.settings']['allow.default_login'] = 1;
-
-// Change the text for the SAML link on the login page.
-$config['simplesamlphp_auth.settings']['login_link_display_name'] = "Log in with UT EID";
-
-// After logging out of Drupal, send the user to the UTLogin logout page, so
-// their session is ended there as well.
-// NOTE: By default they'll be redirected to www.utexas.edu once they're
-// logged out of UTLogin.  See this page for more on the UTLogin logout URL:
-// https://www.utexas.edu/its/help/utlogin/2377
-$config['simplesamlphp_auth.settings']['logout_goto_url'] = "https://enterprise.login.utexas.edu/idp/profile/Logout";
-
-// Security settings for how to handle Cookies over requests.
-$config['simplesamlphp_auth.settings']['secure'] = 1;
-$config['simplesamlphp_auth.settings']['httponly'] = 1;

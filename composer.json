@@ -27,29 +27,16 @@
     "composer-plugin-api": "^1.0 || ^2.0",
     "composer/installers": "^1.9 || ^2.0",
     "drupal/core": "^10",
-    "drupal/simplesamlphp_auth": "4.0.1",
-    "simplesamlphp/simplesamlphp": "2.3.5",
+    "drupal/samlauth": "3.10.0",
     "utexas/utexas_saml_auth_helper": "^3.5"
-  },
-  "require-dev": {
-    "composer/composer": "^1.0 || ^2.0"
   },
   "autoload": {
     "psr-4": {
       "Utexas\\Composer\\": "src/"
     }
   },
-  "config": {
-    "sort-packages": true
-  },
   "extra": {
-    "class": "Utexas\\Composer\\SamlAuthenticationSetupPlugin",
-    "patches": {
-      "drupal/simplesamlphp_auth": {
-          "Role sync breaks manual role assignment": "https://drupalkit.its.utexas.edu/patches/3116539-simplesamlphp_auth-manual-role-assignment.patch",
-          "Redirect to original destination after logging in": "https://drupalkit.its.utexas.edu/patches/2983154-simplesamlphp_auth-redirect-after-login.patch"
-      }
-    }
+    "class": "Utexas\\Composer\\SamlAuthenticationSetupPlugin"
   },
   "prefer-stable": true
 }
