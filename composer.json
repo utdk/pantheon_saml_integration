@@ -11,6 +11,7 @@
   ],
   "homepage": "https://drupalkit.its.utexas.edu",
   "minimum-stability": "dev",
+  "abandoned": "utexas/utexas_saml_auth_helper",
   "authors": [
     {
       "name": "Web Content Management Solutions Team, Information Technology Services, The University of Texas at Austin",
