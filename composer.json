@@ -29,7 +29,7 @@
     "composer/installers": "^1.9 || ^2.0",
     "drupal/core": "^10",
     "drupal/simplesamlphp_auth": "4.0.1",
-    "simplesamlphp/simplesamlphp": "2.3.7",
+    "simplesamlphp/simplesamlphp": "2.4.0",
     "utexas/utexas_saml_auth_helper": "^3.5"
   },
   "require-dev": {
